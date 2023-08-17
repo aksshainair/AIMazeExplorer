@@ -1,8 +1,10 @@
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 import ml
+import re
 
 GRID_SIZE = 11
 CELL_SIZE = 60
+INP_PATTERN  = r'^\d+,\d+$'
 GRID = ml.get_grid()
 path = []
 invalid_start_flag = False
@@ -45,8 +47,10 @@ def input_validator(text):
         if 1 <= value <= GRID_SIZE:
             return True
         else:
+            print("Only In Range 1 to 11 Inclusive")
             return False
-    except ValueError:
+    except (ValueError or TypeError):
+        print("Only Integers")
         return False
     
 def reset_grid():
@@ -57,13 +61,21 @@ def reset_grid():
     GRID[final_row][final_col] = 2
 
 def input_handler(start_coordinates):
-    reset_grid()
-    global path, invalid_start_flag
+    reset_grid()    
+    global path, invalid_start_flag, INP_PATTERN
+    
+    if re.match(INP_PATTERN, start_coordinates):
+        pass
+    else:
+        print("ERROR : Invalid input format")
+        return
+    
+    
     start_row, start_col = start_coordinates.split(",")
-    start_row = int(start_row)
-    start_col = int(start_col)
 
     if input_validator(start_row) and input_validator(start_col):
+        start_row = int(start_row)
+        start_col = int(start_col)
         if GRID[start_row-1][start_col-1]!=1:
             invalid_start_flag = False
             path  = ml.get_path(start_row-1, start_col-1)
@@ -72,6 +84,7 @@ def input_handler(start_coordinates):
             invalid_start_flag = True
     else:
         print("Invalid input. Please enter numbers between 1 and 11.")
+
 
 def update_grid():
 
@@ -105,7 +118,7 @@ timer = simplegui.create_timer(timer_interval, update_grid)
 
 frame = simplegui.create_frame("Maze Runner", GRID_SIZE * CELL_SIZE, GRID_SIZE * CELL_SIZE)
 frame.add_input("Starting (a,b) : ", input_handler, 100)
-wall = simplegui.load_image('/Users/aksshainair/Desktop/aksshaipy/SEM4IndividualProject/wall.jpeg')
+wall = simplegui.load_image('https://raw.githubusercontent.com/aksshainair/AIMazeExplorer/main/wall.jpeg')
 # goal = simplegui.load_image('/Users/aksshainair/Desktop/aksshaipy/SEM4IndividualProject/goal.png')
 wall_w, wall_h = wall.get_width(), wall.get_height()
 # goal_w, goal_h = goal.get_width(), goal.get_height()
