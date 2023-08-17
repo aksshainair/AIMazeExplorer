@@ -16,7 +16,6 @@ rewards[0, 5] = 100. #reward for the GOAL is 100
 #define aisle locations (i.e., white squares) for rows 1 through 9
 aisles = {} #store locations in a dictionary
 aisles[1] = [i for i in range(1, 10)]
-aisles[1].remove(8)
 aisles[2] = [1, 7, 9]
 aisles[3] = [i for i in range(1, 8)]
 aisles[3].append(9)
