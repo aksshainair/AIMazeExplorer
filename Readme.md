@@ -41,5 +41,9 @@ The Maze Solver uses Q-learning to train an AI agent to find the optimal path fr
 2. You can input the starting coordinates (a, b) for the maze solver using the input box. The solver will find the optimal path from the starting position to the goal.
 3. The solver's progress will be displayed on the GUI, where the agent's path is marked in red.
 
+## Screenshot
+
+![Alt Demo Image](https://raw.githubusercontent.com/aksshainair/AIMazeExplorer/main/screenshots/maze.png)
+
 
 
