@@ -70,7 +70,6 @@ def input_handler(start_coordinates):
         print("ERROR : Invalid input format")
         return
     
-    
     start_row, start_col = start_coordinates.split(",")
 
     if input_validator(start_row) and input_validator(start_col):
@@ -78,8 +77,12 @@ def input_handler(start_coordinates):
         start_col = int(start_col)
         if GRID[start_row-1][start_col-1]!=1:
             invalid_start_flag = False
-            path  = ml.get_path(start_row-1, start_col-1)
-            del path[-1]
+            path_or_not  = ml.get_path(start_row-1, start_col-1)
+            if path_or_not=="BOUNDED":
+                invalid_start_flag = True
+            else:
+                path = path_or_not
+                del path[-1]
         else:
             invalid_start_flag = True
     else:
@@ -119,6 +122,7 @@ timer = simplegui.create_timer(timer_interval, update_grid)
 frame = simplegui.create_frame("Maze Runner", GRID_SIZE * CELL_SIZE, GRID_SIZE * CELL_SIZE)
 frame.add_input("Starting (a,b) : ", input_handler, 100)
 wall = simplegui.load_image('https://raw.githubusercontent.com/aksshainair/AIMazeExplorer/main/wall.jpeg')
+# wall = simplegui._load_local_image('/Users/aksshainair/Desktop/aksshaipy/SEM4IndividualProject/AIMazeRunner/wall.jpeg')
 # goal = simplegui.load_image('/Users/aksshainair/Desktop/aksshaipy/SEM4IndividualProject/goal.png')
 wall_w, wall_h = wall.get_width(), wall.get_height()
 # goal_w, goal_h = goal.get_width(), goal.get_height()
