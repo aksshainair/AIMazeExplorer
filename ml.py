@@ -6,7 +6,6 @@ import seaborn as sns
 environment_rows = 11
 environment_columns = 11
 
-cumulative_rewards = []
 episodes = 1000
 
 q_values = np.zeros((environment_rows, environment_columns, 4))
@@ -123,7 +122,6 @@ def train(max_episodes:int = episodes):
 
   for episode in range(max_episodes):
     row_index, column_index = get_starting_location()
-    
     while not is_terminal_state(row_index, column_index):
       action_index = get_next_action(row_index, column_index, epsilon)
 
@@ -137,8 +135,6 @@ def train(max_episodes:int = episodes):
       new_q_value = old_q_value + (learning_rate * temporal_difference)
       q_values[old_row_index, old_column_index, action_index] = new_q_value
 
-    episode_reward = np.sum(q_values)
-    cumulative_rewards.append(episode_reward)
   print('Training complete!')
 
 # #display a few shortest paths
@@ -179,59 +175,3 @@ def get_grid() -> list[list]:
         x.append(2)
     grid.append(x)
   return grid
-
-
-#  TESTING--------------------------------------------------------------
-
-train()
-print(get_shortest_path(3, 9))
-plt.figure(figsize=(13, 7))
-sns.lineplot(x=range(episodes), y=cumulative_rewards)
-plt.title('Learning Curve for Q-learning')
-plt.xlabel('Episode')
-plt.ylabel('Cumulative Reward')
-plt.show()
-
-# episodes = 2000
-
-# cumulative_rewards = []  # List to store cumulative rewards for each episode
-
-# def train_simulated_anealling(epsilon_initial=0.9, epsilon_min=0.1, epsilon_decay=0.001, max_episodes=episodes):
-#   discount_factor = 0.9
-#   learning_rate = 0.9
-
-#   for episode in range(max_episodes):
-#     row_index, column_index = get_starting_location()
-#     epsilon = epsilon_initial  # Initialize epsilon for this episode
-#     episode_reward = 0  # Initialize cumulative reward for this episode
-
-#     while not is_terminal_state(row_index, column_index):
-#         action_index = get_next_action(row_index, column_index, epsilon)
-
-#         old_row_index, old_column_index = row_index, column_index
-#         row_index, column_index = get_next_location(row_index, column_index, action_index)
-
-#         reward = rewards[row_index, column_index]
-#         # episode_reward += reward  # Accumulate the reward for this episode
-
-#         old_q_value = q_values[old_row_index, old_column_index, action_index]
-#         temporal_difference = reward + (discount_factor * np.max(q_values[row_index, column_index])) - old_q_value
-
-#         new_q_value = old_q_value + (learning_rate * temporal_difference)
-#         q_values[old_row_index, old_column_index, action_index] = new_q_value
-
-#         # Simulated Annealing: Decrease epsilon over time
-#         # epsilon = max(epsilon * epsilon_decay, epsilon_min)
-
-#     episode_reward = np.sum(q_values)
-#     cumulative_rewards.append(episode_reward)
-
-# train_simulated_anealling()
-# print(get_shortest_path(3, 9)) #starting at row 3, column 9
-# # print(q_values)
-# plt.figure(figsize=(13, 7))
-# sns.lineplot(x=range(episodes), y=cumulative_rewards)
-# plt.title('Learning Curve for Q-learning')
-# plt.xlabel('Episode')
-# plt.ylabel('Cumulative Reward')
-# plt.show()
